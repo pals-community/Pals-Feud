@@ -1,0 +1,51 @@
+.banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 20px;
+    margin: 16px auto;
+    max-width: 500px;
+    background: var(--ff-deep-blue);
+    border: 2px solid var(--ff-gold);
+    border-radius: 12px;
+    color: var(--ff-gold);
+    text-align: center;
+    box-shadow: 0 1px 24px 1px rgba(0, 0, 0, 0.48);
+    animation: slideDown .25s ease-in-out;
+}
+
+@keyframes slideDown {
+    from{
+        opacity: 0;
+        scale: 0;
+    }
+    to{
+        opacity: 1;
+        scale: 1;
+    }
+}
+
+.message {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.nextButton {
+    cursor: pointer;
+    padding: 10px 28px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
+    background: var(--ff-gradient-dark);
+    border: 3px solid #fff;
+    border-radius: 50px;
+    box-shadow: 0 1px 12px 1px rgba(0, 0, 0, 0.48);
+    transition: transform 0.15s ease;
+}
+
+.nextButton:hover {
+    transform: scale(1.05);
+}

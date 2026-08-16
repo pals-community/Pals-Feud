@@ -1,0 +1,147 @@
+.hostedBy {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 20px 10px 10px;
+    background:
+        radial-gradient(circle, rgba(255, 215, 0, 0.35) 1.4px, transparent 1.6px) 0 0 / 12px 12px,
+        linear-gradient(135deg, #062a52 0%, #0c4779 55%, #003c7b 100%);
+    border: 3px solid var(--ff-gold);
+    border-radius: 60px;
+    box-shadow:
+        0 6px 0 rgba(0, 0, 0, 0.35),
+        0 10px 24px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 2px rgba(255, 255, 255, 0.06);
+    transform: rotate(-0.5deg);
+    animation: 
+        hostedByFloat 4.5s ease-in-out infinite, 
+        hostedByPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.5s backwards;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+}
+
+@keyframes hostedByFloat {
+    0%, 100% { transform: rotate(-0.5deg) translateY(-4px); }
+    50% { transform: rotate(-0.5deg) translateY(0); }
+}
+
+@keyframes hostedByPopIn {
+    from { opacity: 0; transform: rotate(-6deg) scale(0.5); }
+    to { opacity: 1; transform: rotate(-0.5deg) scale(1); }
+}
+
+.hostedBy:hover {
+    transform: rotate(0deg) scale(1.04);
+    box-shadow:
+        0 6px 0 rgba(0, 0, 0, 0.35),
+        0 14px 30px rgba(255, 215, 0, 0.35),
+        inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.hostedBy::after {
+    content: "★";
+    position: absolute;
+    top: -12px;
+    right: 14px;
+    font-size: 1.1rem;
+    color: var(--ff-gold);
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.6);
+    animation: hostedBySparkle 2.2s ease-in-out infinite;
+}
+
+@keyframes hostedBySparkle {
+    0%, 100% { opacity: 0.5; transform: scale(0.85) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.15) rotate(18deg); }
+}
+
+.hostAvatarFrame {
+    position: relative;
+    flex-shrink: 0;
+    width: 58px;
+    height: 58px;
+}
+
+.hostAvatarRing {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px dashed var(--ff-gold);
+    animation: hostRingSpin 10s linear infinite;
+}
+
+.hostAvatarRing::before {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.5) 0%, rgba(255, 215, 0, 0) 72%);
+    animation: hostGlowPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes hostGlowPulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.15); }
+}
+
+.hostAvatar {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+    z-index: 1;
+}
+
+.hostedByCopy {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.hostedByLabel {
+    margin: 0;
+    font-size: 0.62rem;
+    font-weight: bold;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--ff-gold);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.hostedByName {
+    position: relative;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 900;
+    font-style: italic;
+    letter-spacing: 0.3px;
+    color: #fff;
+    text-shadow:
+        1px 1px 0 var(--ff-red),
+        2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 480px) {
+    .hostedBy {
+        bottom: 12px;
+        right: 12px;
+        padding: 8px 16px 8px 8px;
+        gap: 10px;
+    }
+
+    .hostAvatarFrame {
+        width: 48px;
+        height: 48px;
+    }
+
+    .hostedByName {
+        font-size: 0.9rem;
+    }
+}

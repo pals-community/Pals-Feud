@@ -1,0 +1,60 @@
+.upload {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--ff-gold);
+    background: rgba(0, 60, 123);
+    border: 3px solid var(--ff-gold);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.2s ease, border-style 0.2s ease;
+}
+
+.upload input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.upload svg {
+    flex-shrink: 0;
+}
+
+.text {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.upload:hover {
+    background: rgba(0, 60, 123);
+    transform: scale(1.01);
+}
+
+.upload:active {
+    transform: scale(1);
+}
+
+.upload:has(input:focus-visible) {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+.upload.loaded {
+    color: #fff;
+    background: var(--ff-gradient-dark);
+    border-style: solid;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
+}

@@ -1,0 +1,213 @@
+.screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+    padding: 8px 0 12px;
+}
+
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+}
+
+.heroText {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.avatarWrap {
+    --size: 120px;
+    position: relative;
+    width: var(--size);
+    height: var(--size);
+    flex-shrink: 0;
+    margin: 8px 0 4px;
+    animation: avatarPopIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s backwards;
+}
+
+@keyframes avatarPopIn {
+    from { opacity: 0; transform: scale(0.4) rotate(-20deg); }
+    to { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.avatarGlow {
+    position: absolute;
+    inset: -30px;
+    border-radius: 50%;
+    /*background: radial-gradient(circle, rgba(255, 215, 0, 0.55) 0%, rgba(255, 215, 0, 0) 70%);*/
+    filter: blur(4px);
+    /*animation: pulseGlow 2.4s ease-in-out infinite;*/
+    z-index: 0;
+}
+
+.avatarFloat {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transition: scale .25s ease-in-out;
+    cursor: pointer;
+    /*animation: avatarFloat 3.2s ease-in-out infinite;*/
+}
+
+.avatarFloat:active {
+    scale: .6;
+}
+
+.avatarImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 18px rgba(255, 215, 0, 0.35));
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) , filter 0.35s ease;
+}
+
+.avatarWrap:hover .avatarImg {
+    transform: scale(1.06) rotate(-3deg);
+    filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 26px rgba(255, 215, 0, 0.55));
+}
+
+@keyframes pulseGlow {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 0.95; transform: scale(1.12); }
+}
+
+@keyframes avatarFloat {
+    0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+    50% { transform: translateY(-10px) rotate(1.5deg); }
+}
+
+.eyebrow {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: bold;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0.85;
+    animation: fadeUp 0.5s ease 0.45s backwards;
+}
+
+.title {
+    margin: 0;
+    font-family: 'Arial Black', Impact, Helvetica, sans-serif;
+    font-size: clamp(2.1rem, 7.5vw, 5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: linear-gradient(to bottom, #fff8d6 0%, #ffe066 35%, var(--ff-gold) 70%, #e8ac00 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 2px var(--ff-navy);
+    paint-order: stroke fill;
+    text-shadow: none;
+    filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.4)) drop-shadow(0 0 22px rgba(255, 215, 0, 0.45));
+    animation: dropIn 0.65s cubic-bezier(0.34, 1.4, 0.4, 1) 0.55s backwards, titleGlow 2.6s ease-in-out 1.2s infinite;
+}
+
+@keyframes dropIn {
+    from { opacity: 0; transform: translateY(-28px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes titleGlow {
+    0%, 100% { filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.4)) drop-shadow(0 0 16px rgba(255, 215, 0, 0.35)); }
+    50% { filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.4)) drop-shadow(0 0 30px rgba(255, 215, 0, 0.7)); }
+}
+
+.discordBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    padding: 7px 18px 7px 14px;
+    background: linear-gradient(to bottom, #ffffff 0%, #f2f3ff 100%);
+    border: 2px solid rgba(88, 101, 242, 0.4);
+    border-radius: 999px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3), 0 0 18px rgba(88, 101, 242, 0.55);
+    animation: badgePopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s backwards, badgeGlow 2.6s ease-in-out 1.3s infinite;
+}
+
+.discordIcon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.15));
+}
+
+.subtitle {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #4752c4;
+    text-shadow: none;
+}
+
+@keyframes badgePopIn {
+    from { opacity: 0; transform: scale(0.5) translateY(-8px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes badgeGlow {
+    0%, 100% { box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4), 0 0 12px rgba(88, 101, 242, 0.45); }
+    50% { box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4), 0 0 26px rgba(88, 101, 242, 0.85); }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.teamsRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.vs {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--ff-gold);
+    animation: vsPopIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 1.15s backwards;
+}
+
+@keyframes vsPopIn {
+    from { opacity: 0; transform: scale(0.3); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.startButton {
+    cursor: pointer;
+    padding: 14px 48px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
+    background: var(--ff-gradient-dark);
+    border: 3px solid #fff;
+    border-radius: 50px;
+    box-shadow: 0 2px 16px 1px rgba(0, 0, 0, 0.5);
+    transition: transform 0.15s ease;
+    animation: fadeUp 0.5s ease 1.3s backwards;
+}
+
+.startButton:hover {
+    transform: scale(1.05);
+}
