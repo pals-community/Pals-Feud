@@ -1,10 +1,11 @@
 import { UltraComponent } from "ultra-light-js";
 import { GAME_CONTEXT } from "@/context/game.context";
-import { createChromaKeyPainter, type ChromaKeyHandle } from "@/utils/chroma-key";
+import { createChromaKeyPainter } from "@/utils/chroma-key";
 import styles from './wrong-buzzer.module.css';
 import { WRONG_BUZZER_VIDEO } from "@/data";
 import { SETTINGS_CONTEXT } from "@/context/settings.context";
-
+import type { ChromaKeyHandle } from "@/types";
+ 
 export function WrongBuzzer() {
 
     let painter: ChromaKeyHandle | null = null;

@@ -14,7 +14,6 @@ import { DevBy } from "./dev-by/dev-by";
 
 export function Layout(
     ...children: UltraLightElement[]
-
 ) {
 
     const { covers, subsCovers, getCovers } = ultraCovers();
