@@ -64,6 +64,7 @@ export const VIDEO_CTX: IVideoCTX = ultraCompState({
 
     closeVideo: (comp: IVideoCTX) => {
         comp.isVisible.set(false);
+        comp.currentVideoId.set('');
     },
 
     removeVideo: (comp: IVideoCTX, id: string) => {

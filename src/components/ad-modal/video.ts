@@ -5,21 +5,17 @@ import styles from './ad-modal.module.css';
 export function AdVideo() {
 
     const onVideoChange = ($el: HTMLElement) => {
-
         const $video = $el as HTMLVideoElement;
         const video = VIDEO_CTX.getCurrentVideo();
-
         if (!video) {
             $video.removeAttribute('src');
             $video.load();
-            return;
-        }
-
-        if ($video.src !== video.url) {
-            $video.src = video.url;
-            $video.load();
-        }
-        
+        }else{
+            if ($video.src !== video.url) {
+                $video.src = video.url;
+                $video.load();
+            }
+        }   
     };
 
     const onVisibleChange = ($el: HTMLElement) => {
@@ -55,11 +51,13 @@ export function AdVideo() {
                             VIDEO_CTX.currentVideoId.subscribe,
                             VIDEO_CTX.videos.subscribe
                         ],
-                        triggerFunction: onVideoChange
+                        triggerFunction: onVideoChange,
+                        defer: true
                     },
                     {
                         subscriber: VIDEO_CTX.isVisible.subscribe,
-                        triggerFunction: onVisibleChange
+                        triggerFunction: onVisibleChange,
+                        defer: true
                     }
                 ]
             })
