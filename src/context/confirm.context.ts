@@ -50,3 +50,11 @@ export const CONFIRM_CONTEXT: IConfirmCTX = ultraCompState({
     }
 
 });
+
+export function showFirstGuessPrompt(): void {
+    CONFIRM_CONTEXT.show({
+        title: 'First Guess Phase!',
+        message: 'Both teams can make a guess. Higher guess gets to continue the panel!',
+        confirmText: 'Got it!'
+    });
+}

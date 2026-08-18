@@ -11,6 +11,7 @@ import { ultraCovers } from "../hooks/ultraCovers";
 import floatingCoversStyles from "./floating-covers/floating-covers.module.css";
 import { TeamEditor } from "./team-editor/team-editor";
 import { DevBy } from "./dev-by/dev-by";
+import { AdModal } from "./ad-modal/ad-modal";
 
 export function Layout(
     ...children: UltraLightElement[]
@@ -46,6 +47,8 @@ export function Layout(
         SettingsModal(),
 
         ConfirmModal(),
+
+        AdModal(),
 
         HostedBy(),
 

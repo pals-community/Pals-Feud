@@ -3,7 +3,7 @@ import { AnswerCard } from "../answer-card/answer-card";
 import { PANEL_CONTEXT } from "../../context/panel.context";
 import type { IFeudAnswer } from "@/types";
 import styles from './question-panel.module.css';
-import { CONFIRM_CONTEXT } from "@/context/confirm.context";
+import { showFirstGuessPrompt } from "@/context/confirm.context";
 
 export function QuestionPanel() {
 
@@ -20,11 +20,6 @@ export function QuestionPanel() {
     ] = ultraState<IFeudAnswer[]>([]);
 
     const onAnswersChange = ($div: HTMLElement) => {
-        CONFIRM_CONTEXT.show({
-            title: 'First Guess Phase!',
-            message: 'Both teams can make a guess. Higher guess gets to continue the panel!',
-            confirmText: 'Got it!'
-        });
         $div.replaceChildren(
             ...answers()
                 .sort((a, b) => a.position - b.position)
@@ -34,7 +29,7 @@ export function QuestionPanel() {
 
     const getPanelInfo = () => {
         setPanelTitle(PANEL_CONTEXT.currentPanel.get());
-        setAnswers(PANEL_CONTEXT.getPanel())
+        setAnswers(PANEL_CONTEXT.getPanel());
     }
 
     const onTitleChange = ($h1: HTMLElement) => {
@@ -44,7 +39,10 @@ export function QuestionPanel() {
     return UltraComponent({
         component: '<section></section>',
         className: [styles.panel],
-        onMount: [getPanelInfo],
+        onMount: [
+            getPanelInfo,
+            showFirstGuessPrompt
+        ],
         trigger: [{
             subscriber: PANEL_CONTEXT.currentPanel.subscribe,
             triggerFunction: getPanelInfo
