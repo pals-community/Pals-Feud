@@ -3,9 +3,10 @@ import { PANEL_CONTEXT } from "./panel.context";
 import { SOUND_CTX } from "@/context/sound.context";
 import { isMercifulMatch } from "@/utils/fuzzy-match";
 import type { GamePhase, ITeam } from "@/types";
-import { CONFIRM_CONTEXT } from "./confirm.context";
+import { CONFIRM_CONTEXT, showFirstGuessPrompt } from "./confirm.context";
 import confetti from 'canvas-confetti';
 import { WRON_BUZZER_DURATION } from "@/data";
+import { VIDEO_CTX } from "./video.context";
 
 let playOrPassTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -229,6 +230,27 @@ export const GAME_CONTEXT: IGameCTX = ultraCompState({
         const nextStarting: 0 | 1 = comp.startingTeam.get() === 0 ? 1 : 0;
         comp.startingTeam.set(nextStarting);
         comp.activeTeam.set(nextStarting);
+
+        const videos = VIDEO_CTX.videos.get();
+        if (Object.keys(videos).length === 0) {
+            showFirstGuessPrompt();
+            return;
+        }
+
+        CONFIRM_CONTEXT.show({
+            title: 'Sponsored Break',
+            message: 'Do you want to run an ad?',
+            cancelText: 'Nah',
+            onConfirm() {
+                const mostRecent = Object.values(videos)
+                    .sort((a, b) => b.uploadedAt - a.uploadedAt)[0];
+                VIDEO_CTX.playVideo(mostRecent.id);
+                showFirstGuessPrompt();
+            },
+            onCancel() {
+                showFirstGuessPrompt();
+            }
+        })
 
     },
 

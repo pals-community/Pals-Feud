@@ -1,0 +1,332 @@
+.backdrop {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background:
+        radial-gradient(circle at top, rgba(255, 215, 0, 0.14), transparent 38%),
+        rgba(4, 12, 24, 0.78);
+    backdrop-filter: blur(10px);
+    z-index: 210;
+}
+
+.videoWrapper {
+    width: min(960px, 100%);
+    border-radius: 28px;
+    padding: 18px;
+    color: #fff;
+    background:
+        linear-gradient(180deg, rgba(10, 23, 45, 0.98), rgba(4, 16, 33, 0.98));
+    border: 1px solid rgba(255, 215, 0, 0.45);
+    box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.52),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    animation: modalPopIn 220ms cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+
+@keyframes modalPopIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.videoFrame {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 16px;
+}
+
+.heading {
+    min-width: 0;
+    display: grid;
+    gap: 4px;
+}
+
+.kicker {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 215, 0, 0.9);
+}
+
+.subtitle {
+    margin: 0;
+    max-width: 46rem;
+    font-size: 0.96rem;
+    line-height: 1.5;
+    color: rgba(237, 244, 255, 0.78);
+}
+
+.close {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 999px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.close:hover {
+    background: rgba(255, 255, 255, 0.16);
+    transform: translateY(-1px);
+}
+
+.close:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.close:focus-visible {
+    outline: 2px solid rgba(255, 215, 0, 0.95);
+    outline-offset: 2px;
+}
+
+.player {
+    border-radius: 22px;
+    overflow: hidden;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.video {
+    display: block;
+    width: 100%;
+    max-height: min(68vh, 620px);
+    background: #000;
+}
+
+.footer {
+    margin: 14px 0 0;
+    font-size: 0.84rem;
+    line-height: 1.4;
+    color: rgba(237, 244, 255, 0.66);
+}
+
+@media (max-width: 720px) {
+    .backdrop {
+        padding: 12px;
+    }
+
+    .videoWrapper {
+        padding: 14px;
+        border-radius: 22px;
+    }
+
+    .videoFrame {
+        margin-bottom: 12px;
+    }
+
+    .subtitle {
+        font-size: 0.92rem;
+    }
+}
+
+.menu {
+    position: relative;
+    min-width: 0;
+}
+
+.titleButton {
+    all: unset;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+    padding: 2px 6px 2px 2px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 160ms ease;
+}
+
+.titleButton:hover {
+    opacity: 0.82;
+}
+
+.titleButton:focus-visible {
+    outline: 2px solid rgba(255, 215, 0, 0.95);
+    outline-offset: 3px;
+}
+
+.titleText {
+    margin: 0;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chevron {
+    flex-shrink: 0;
+    display: inline-flex;
+    color: rgba(255, 215, 0, 0.9);
+    transition: transform 200ms ease;
+}
+
+.chevron svg {
+    width: 15px;
+    height: 15px;
+}
+
+.titleButton[aria-expanded="true"] .chevron {
+    transform: rotate(180deg);
+}
+
+.videoListDropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: min(340px, 82vw);
+    max-height: 280px;
+    padding: 6px;
+    margin: 0;
+    overflow-y: auto;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 215, 0, 0.28);
+    background: linear-gradient(180deg, rgba(14, 30, 56, 0.98), rgba(6, 18, 38, 0.98));
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    pointer-events: none;
+    transition: opacity 160ms ease, transform 160ms ease, visibility 160ms;
+}
+
+.videoListDropdown.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.videoListEmpty {
+    margin: 0;
+    padding: 14px 10px;
+    text-align: center;
+    font-size: 0.86rem;
+    color: rgba(237, 244, 255, 0.6);
+}
+
+.videoTile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: rgba(237, 244, 255, 0.88);
+    transition: background-color 140ms ease;
+    text-transform: uppercase;
+
+    &:focus-visible {
+        outline: 2px solid rgba(255, 215, 0, 0.85);
+        outline-offset: -2px;
+    }
+
+    &:hover .videoTileTitle{
+        text-decoration: underline;
+    }
+
+    &.videoTileActive {
+        color: #fff;
+    }
+}
+
+.videoTileIcon {
+    flex-shrink: 0;
+    display: inline-flex;
+    width: 26px;
+    height: 26px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 215, 0, 0.9);
+
+    svg {
+        width: 13px;
+        height: 13px;
+    }
+}
+
+.videoTileTitle {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.9rem;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.videoTileCheck {
+    flex-shrink: 0;
+    display: none;
+    color: rgba(255, 215, 0, 0.95);
+}
+
+.videoTileActive .videoTileCheck {
+    display: inline-flex;
+}
+
+.videoTileCheck svg {
+    width: 14px;
+    height: 14px;
+}
+
+.videoTileRemove {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: rgba(237, 244, 255, 0.5);
+    cursor: pointer;
+    background-color: rgba(255, 92, 92, 0.18);
+    color: #ff8080;
+    transition: opacity 140ms ease, background-color 140ms ease, color 140ms ease;
+
+    &:hover {
+        color: #fff;
+        background-color: #761a1a;
+    }
+
+    &:focus-visible {
+        opacity: 1;
+        outline: 2px solid rgba(255, 215, 0, 0.85);
+        outline-offset: 1px;
+    }
+
+    svg {
+        width: 11px;
+        height: 11px;
+    }
+
+}

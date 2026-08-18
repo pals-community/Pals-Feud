@@ -9,6 +9,7 @@ import { ButtonGen } from "@/components/button-gen/button-gen";
 import { CsvUpload } from "@/components/csv-upload/csv-upload";
 import { PANEL_CONTEXT } from "@/context/panel.context";
 import { DISCORD_ICON } from "@/data";
+import { VideoUpload } from "@/components/video-upload/video-upload";
 
 export function PreGameScreen() {
 
@@ -102,7 +103,10 @@ export function PreGameScreen() {
                         }
                     }),
 
-                    CsvUpload()
+                    CsvUpload(),
+
+                    VideoUpload()
+                    
                 ]
 
             })

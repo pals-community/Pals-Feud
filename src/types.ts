@@ -43,3 +43,11 @@ export interface IConfirmOptions {
     onCancel?: () => void;
     onClickOut?: () => void;
 }
+
+export interface IVideoEntry {
+    id: string;
+    title: string;
+    url: string;
+    fileName: string;
+    uploadedAt: number;
+}
