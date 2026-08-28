@@ -4,6 +4,7 @@ import styles from './team-panel.module.css';
 import { TeamPanelScore } from "./score";
 import { TeamPanelName } from "./name";
 import { TeamPanelAnswerer } from "./answerer";
+import { TeamPanelIcon } from "./icon";
 
 export function TeamPanel(teamIndex: 0 | 1) {
 
@@ -30,6 +31,10 @@ export function TeamPanel(teamIndex: 0 | 1) {
         }],
 
         children: [
+
+            TeamPanelIcon({
+                teamIndex
+            }),
 
             TeamPanelName({
                 teamIndex

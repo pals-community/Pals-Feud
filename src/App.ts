@@ -1,11 +1,11 @@
 import { UltraActivity, UltraComponent, UltraRouter, ultraNavigate } from "ultra-light-js";
 import { PreGameScreen } from "./pages/pre-game-screen.page";
-import { teamsReady } from "./context/game.context";
+import { GAME_CONTEXT, teamsReady } from "./context/game.context";
 import styles from './App.module.css';
 import { GamePage } from "./pages/game.page";
 import { PRE_GAME_CTX } from "./context/pre-game.context";
 import { Layout } from "./components/layout";
-import { ULTRA_COVERS_CTX } from "./hooks/ultraCovers";
+import { COVERS_CTX } from "./context/covers.context";
 import { Loader } from "./components/loader/loader";
 import { MUSIC_CTX } from "./context/music.context";
 
@@ -13,21 +13,23 @@ export function App() {
 
     MUSIC_CTX.arm();
 
+    void GAME_CONTEXT.loadTeamIcons();
+
     const isAppVisible = () => {
         return PRE_GAME_CTX.isVisible.get()
-        && !ULTRA_COVERS_CTX.isLoading.get()
+        && !COVERS_CTX.isLoading.get()
     }
 
     const appVisibilitySubscribers = [
         PRE_GAME_CTX.isVisible.subscribe,
-        ULTRA_COVERS_CTX.isLoading.subscribe
+        COVERS_CTX.isLoading.subscribe
     ];
 
     return Layout(
 
         UltraActivity({
             mode: {
-                state: ULTRA_COVERS_CTX.isLoading.get,
+                state: COVERS_CTX.isLoading.get,
                 subscriber: appVisibilitySubscribers
             },
             component: '<div></div>',

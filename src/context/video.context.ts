@@ -72,8 +72,7 @@ export const VIDEO_CTX: IVideoCTX = ultraCompState({
         const video = videos[id];
         if (!video) return;
         URL.revokeObjectURL(video.url);
-        const nextVideos = { ...videos };
-        delete nextVideos[id];
+        const { [id]: _, ...nextVideos } = videos;
         comp.videos.set(nextVideos);
         if (comp.currentVideoId.get() === id) {
             comp.currentVideoId.set('');

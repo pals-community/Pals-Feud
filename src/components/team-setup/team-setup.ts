@@ -2,6 +2,7 @@ import { UltraComponent } from "ultra-light-js";
 import { GAME_CONTEXT } from "@/context/game.context";
 import styles from './team-setup.module.css';
 import { CONFIRM_CONTEXT } from "@/context/confirm.context";
+import { EMOJI_CTX } from "@/context/emoji.context";
 
 export function TeamSetup(teamIndex: 0 | 1) {
 
@@ -10,6 +11,10 @@ export function TeamSetup(teamIndex: 0 | 1) {
     const updateName = ($span: HTMLElement) => {
         if (document.activeElement === $span) return;
         $span.textContent = GAME_CONTEXT.teams.get()[teamIndex].name;
+    }
+
+    const updateIcon = ($img: HTMLElement) => {
+        ($img as HTMLImageElement).src = GAME_CONTEXT.teams.get()[teamIndex].icon;
     }
 
     const onNameBlur = (e: Event) => {
@@ -76,7 +81,31 @@ export function TeamSetup(teamIndex: 0 | 1) {
         ],
         
         children: [
-            
+
+            UltraComponent({
+                component: '<button type="button"></button>',
+                className: [styles.iconButton],
+                attributes: { 'aria-label': 'Shuffle team icon', title: 'Shuffle team icon' },
+                eventHandler: {
+                    click: () => {
+                        EMOJI_CTX.currentTeam.set(teamIndex);
+                        EMOJI_CTX.isModalVisible.set(true);
+                    }
+                },
+                children: [
+                    UltraComponent({
+                        component: '<img/>',
+                        className: [styles.iconImg],
+                        attributes: { alt: 'Team icon' },
+                        onMount: [updateIcon],
+                        trigger: [{
+                            subscriber: GAME_CONTEXT.teams.subscribe,
+                            triggerFunction: updateIcon
+                        }]
+                    })
+                ]
+            }),
+
             UltraComponent({
                 component: '<div></div>',
                 className: [styles.nameWrap],
