@@ -1,6 +1,7 @@
 import { VIDEO_CTX } from "@/context/video.context";
 import { UltraComponent } from "ultra-light-js";
 import styles from './ad-modal.module.css';
+import { SETTINGS_CONTEXT } from "@/context/settings.context";
 
 export function AdVideo() {
 
@@ -23,6 +24,16 @@ export function AdVideo() {
         const $video = $el as HTMLVideoElement;
         $video.removeAttribute('src');
         $video.load();
+        SETTINGS_CONTEXT.muted.set(
+            !SETTINGS_CONTEXT.muted.get()
+        )
+    }
+
+    const onPlayPause = () => {
+        console.log('[INFO] AdVideo: play/paused')
+        SETTINGS_CONTEXT.muted.set(
+            !SETTINGS_CONTEXT.muted.get()
+        )
     }
 
     return UltraComponent({
@@ -59,7 +70,13 @@ export function AdVideo() {
                         triggerFunction: onVisibleChange,
                         defer: true
                     }
-                ]
+                ],
+
+                eventHandler: {
+                    play: onPlayPause,
+                    pause: onPlayPause
+                }
+
             })
         ]
 
