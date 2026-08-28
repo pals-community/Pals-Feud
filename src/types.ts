@@ -8,6 +8,7 @@ export interface ITeam {
     name: string;
     score: number;
     members: string[];
+    icon: string;
 }
 
 export type GamePhase = 'guessing' | 'steal' | 'round-over';
@@ -51,3 +52,11 @@ export interface IVideoEntry {
     fileName: string;
     uploadedAt: number;
 }
+
+export type EmojiManifest = {
+    emojis: string[];
+};
+
+export type CoversManifest = {
+    covers: string[];
+};

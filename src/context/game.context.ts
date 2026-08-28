@@ -7,6 +7,8 @@ import { CONFIRM_CONTEXT, showFirstGuessPrompt } from "./confirm.context";
 import confetti from 'canvas-confetti';
 import { WRON_BUZZER_DURATION } from "@/data";
 import { VIDEO_CTX } from "./video.context";
+import { pickRandom } from "@/utils";
+import { EMOJI_CTX } from "./emoji.context";
 
 let playOrPassTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -35,6 +37,9 @@ export interface IGameCTX {
     advanceAnswerer: (teamIndex: 0 | 1) => void;
     setAnswerer: (teamIndex: 0 | 1, memberIndex: number) => void;
     editPoints: (teamIndex: 0|1, newPoints: number) => void;
+    setTeamIcon: (teamIndex: 0 | 1, icon: string) => void;
+    cycleTeamIcon: (teamIndex: 0 | 1) => void;
+    loadTeamIcons: () => Promise<void>;
 }
 
 export const GAME_CONTEXT: IGameCTX = ultraCompState({
@@ -51,8 +56,8 @@ export const GAME_CONTEXT: IGameCTX = ultraCompState({
     awaitingPlayOrPass: false,
 
     teams: [
-        { name: 'Gooners', score: 0, members: [] },
-        { name: 'Jerkers', score: 0, members: [] }
+        { name: 'Gooners', score: 0, members: [], icon: '' },
+        { name: 'Jerkers', score: 0, members: [], icon: '' }
     ] as ITeam[],
 
     activeTeam: 0 as 0 | 1,
@@ -312,15 +317,40 @@ export const GAME_CONTEXT: IGameCTX = ultraCompState({
     },
 
     editPoints: (
-        comp: IGameCTX, 
+        comp: IGameCTX,
         teamIndex: 0 | 1,
         newPoints: number
     ) => {
         const teams = [...comp.teams.get()];
         teams[teamIndex].score = newPoints;
         comp.teams.set(teams);
-    }
+    },
 
+    setTeamIcon: (comp: IGameCTX, teamIndex: 0 | 1, icon: string) => {
+        if (!icon) return;
+        const teams = comp.teams.get();
+        comp.teams.set(teams.map((t, i) =>
+            i === teamIndex ? { ...t, icon } : t
+        ));
+    },
+
+    cycleTeamIcon: (comp: IGameCTX, teamIndex: 0 | 1) => {
+        const teams = comp.teams.get();
+        const otherIcon = teams[teamIndex === 0 ? 1 : 0].icon;
+        const next = EMOJI_CTX.pick([otherIcon, teams[teamIndex].icon]);
+        if (next) comp.setTeamIcon(teamIndex, next);
+    },
+
+    loadTeamIcons: async (comp: IGameCTX) => {
+        await EMOJI_CTX.load();
+        const pool = EMOJI_CTX.pool.get();
+        if (pool.length < 2) return;
+        const [iconA, iconB] = pickRandom(pool, 2);
+        comp.teams.set(comp.teams.get().map((t, i) =>
+            ({ ...t, icon: (i === 0 ? iconA : iconB) ?? t.icon })
+        ));
+    }
+    
 })
 
 export function teamsReady(): boolean {
