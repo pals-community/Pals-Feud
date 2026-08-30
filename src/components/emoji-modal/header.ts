@@ -11,7 +11,7 @@ export function EmojiModalHeader({
         className: [styles.banner],
         children: [
             UltraComponent({
-                component: '<h2 id="emoji-modal-title">Select your fighter</h2>',
+                component: '<h2 id="emoji-modal-title">Select your Avatar</h2>',
                 className: [styles.bannerText]
             }),
             UltraComponent({
