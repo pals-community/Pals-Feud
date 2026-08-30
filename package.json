@@ -18,7 +18,7 @@
     "@types/canvas-confetti": "^1.9.0",
     "better-wiki": "^0.18.0",
     "canvas-confetti": "^1.9.4",
-    "ultra-light-js": "^1.4.0"
+    "ultra-light-js": "^1.6.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
