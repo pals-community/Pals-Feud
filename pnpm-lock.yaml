@@ -18,8 +18,8 @@ importers:
         specifier: ^1.9.4
         version: 1.9.4
       ultra-light-js:
-        specifier: ^1.4.0
-        version: 1.4.0
+        specifier: ^1.6.0
+        version: 1.6.0
     devDependencies:
       '@eslint/js':
         specifier: ^10.0.1
@@ -1022,8 +1022,8 @@ packages:
     engines: {node: '>=16.20.0'}
     hasBin: true
 
-  ultra-light-js@1.4.0:
-    resolution: {integrity: sha512-/YUmYs+v+w4gwOfOYAi3JvP51WC6EAkn9hpRH8/v4N2mppTj3JvNS+YhVAgBXbk8H7h+j7PfW/8NqaSoZ3js1Q==}
+  ultra-light-js@1.6.0:
+    resolution: {integrity: sha512-xkC3l0yqj1cRyhb/FJdL2swgVUaNreLHv8c/bK90z77kq+eoD4qUnAMbFtgz1mUz05dmteQH1x8WH3SjwedEPA==}
     engines: {node: '>=18'}
 
   unbash@4.0.10:
@@ -1946,7 +1946,7 @@ snapshots:
       '@typescript/typescript-win32-arm64': 7.0.2
       '@typescript/typescript-win32-x64': 7.0.2
 
-  ultra-light-js@1.4.0:
+  ultra-light-js@1.6.0:
     dependencies:
       csstype: 3.2.3
 
