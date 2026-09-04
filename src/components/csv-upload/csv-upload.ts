@@ -1,6 +1,8 @@
 import { UltraComponent } from "ultra-light-js";
 import { PANEL_CONTEXT } from "@/context/panel.context";
 import { feudAnswerDTO } from "@/utils/dto";
+import { filterValidPanels } from "@/utils/panel-validation";
+import { MIN_PANEL_ANSWERS } from "@/data";
 import styles from './csv-upload.module.css';
 import { CONFIRM_CONTEXT } from "@/context/confirm.context";
 
@@ -16,16 +18,18 @@ export function CsvUpload() {
 
         const text = await file.text();
 
-        const answers = text
+        const parsed = text
         .split('\n')
         .slice(1)
         .map(feudAnswerDTO)
         .filter(f => f.question);
 
+        const { valid: answers, droppedQuestions } = filterValidPanels(parsed);
+
         PANEL_CONTEXT.panelAnswers.set(answers);
         PANEL_CONTEXT.currentPanel.set(PANEL_CONTEXT.getPanelKeys()[0] ?? '');
 
-        CONFIRM_CONTEXT.show({
+        const showLoadedConfirm = () => CONFIRM_CONTEXT.show({
             title: 'Panels Loaded',
             message: 'All panels have been loaded.',
             confirmText: "Let's go!",
@@ -37,11 +41,22 @@ export function CsvUpload() {
                     confirmText: 'Nisu',
                     cancelText: 'Nah',
                     onCancel: () => {
-                        $input.click();  
+                        $input.click();
                     }
                 })
             }
         })
+
+        if (droppedQuestions.length > 0) {
+            CONFIRM_CONTEXT.show({
+                title: 'Some Panels Skipped',
+                message: `Panels need at least ${MIN_PANEL_ANSWERS} answers, so these were skipped:\n${droppedQuestions.map(q => `· ${q}`).join('\n')}`,
+                confirmText: 'Got it',
+                onConfirm: showLoadedConfirm
+            })
+        } else {
+            showLoadedConfirm();
+        }
 
         if ($label) {
             const $text = $label.querySelector(`.${styles.text}`);
