@@ -3,4 +3,3 @@ raw/
 dist/
 release/
 src/core.ts
-.githooks/
