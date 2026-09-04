@@ -24,6 +24,8 @@ export const MIN_COVERS = 0;
 
 export const MAX_COVERS = 200;
 
+export const MIN_PANEL_ANSWERS = 3;
+
 export const DEFAULTS: IPersistedSettings = {
     musicVolume: 0.4,
     sfxVolume: 0.8,

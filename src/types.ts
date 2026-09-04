@@ -60,3 +60,8 @@ export type EmojiManifest = {
 export type CoversManifest = {
     covers: string[];
 };
+
+export interface IPanelValidationResult {
+    valid: IFeudAnswerWithQuestion[];
+    droppedQuestions: string[];
+}
