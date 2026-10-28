@@ -72,10 +72,17 @@
 
 .answerText {
     margin: 5px;
-    font-size: 7cqw;
-    width: 80%;    
+    font-size: min(7cqw, 1.2rem);
+    line-height: 1.1;
+    width: 80%;
+    min-width: 0;
     text-align: center;
-    white-space: nowrap;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
 }
 
 .answerPoints {
