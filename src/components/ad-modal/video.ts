@@ -3,6 +3,20 @@ import { UltraComponent } from "ultra-light-js";
 import styles from './ad-modal.module.css';
 import { SETTINGS_CONTEXT } from "@/context/settings.context";
 
+let mutedBeforeAd: boolean | null = null;
+
+const duckAudio = () => {
+    if (mutedBeforeAd !== null) return;
+    mutedBeforeAd = SETTINGS_CONTEXT.muted.get();
+    SETTINGS_CONTEXT.muted.set(true);
+};
+
+const restoreAudio = () => {
+    if (mutedBeforeAd === null) return;
+    SETTINGS_CONTEXT.muted.set(mutedBeforeAd);
+    mutedBeforeAd = null;
+};
+
 export function AdVideo() {
 
     const onVideoChange = ($el: HTMLElement) => {
@@ -24,16 +38,7 @@ export function AdVideo() {
         const $video = $el as HTMLVideoElement;
         $video.removeAttribute('src');
         $video.load();
-        SETTINGS_CONTEXT.muted.set(
-            !SETTINGS_CONTEXT.muted.get()
-        )
-    }
-
-    const onPlayPause = () => {
-        console.log('[INFO] AdVideo: play/paused')
-        SETTINGS_CONTEXT.muted.set(
-            !SETTINGS_CONTEXT.muted.get()
-        )
+        restoreAudio();
     }
 
     return UltraComponent({
@@ -73,8 +78,8 @@ export function AdVideo() {
                 ],
 
                 eventHandler: {
-                    play: onPlayPause,
-                    pause: onPlayPause
+                    play: duckAudio,
+                    pause: restoreAudio
                 }
 
             })
