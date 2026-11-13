@@ -10,5 +10,4 @@ https://pals-feud.vercel.app/game
 
 ## Dependencies
 
-* [better-wiki](https://www.npmjs.com/package/better-wiki)
 * [canvas-confetti](https://www.npmjs.com/package/canvas-confetti)
