@@ -23,10 +23,7 @@ export interface IGameCTX {
     roundWinner: IUltraCompStateStateful<0 | 1 | null>;
     answererIndex: IUltraCompStateStateful<[number, number]>;
     missCount: IUltraCompStateStateful<number>;
-    isFirstGuessPhase: IUltraCompStateStateful<boolean>;
     firstGuessPoints: IUltraCompStateStateful<{ 0: number; 1: number }>;
-    firstGuessAttempts: IUltraCompStateStateful<number>;
-    awaitingPlayOrPass: IUltraCompStateStateful<boolean>;
     guess: (text: string) => void;
     awardPot: (teamIndex: 0 | 1) => void;
     nextRound: () => void;
@@ -44,16 +41,10 @@ export interface IGameCTX {
 
 export const GAME_CONTEXT: IGameCTX = ultraCompState({
 
-    isFirstGuessPhase: true,
-
     firstGuessPoints: {
         0: 0,
         1: 0
     },
-
-    firstGuessAttempts: 0,
-
-    awaitingPlayOrPass: false,
 
     teams: [
         { name: 'Gooners', score: 0, members: [], icon: '' },
@@ -68,7 +59,7 @@ export const GAME_CONTEXT: IGameCTX = ultraCompState({
 
     strikes: 0,
 
-    phase: 'guessing' as GamePhase,
+    phase: 'first-guess-1' as GamePhase,
 
     revealed: [] as number[],
 
@@ -80,8 +71,8 @@ export const GAME_CONTEXT: IGameCTX = ultraCompState({
 
     guess: (comp: IGameCTX, text: string) => {
 
-        if (comp.phase.get() === 'round-over') return;
-        if (comp.awaitingPlayOrPass.get()) return; //waiting on the play-or-pass decision
+        const phase = comp.phase.get();
+        if (phase === 'round-over' || phase === 'game-over' || phase === 'play-or-pass') return;
 
         const panel = PANEL_CONTEXT.getPanel();
         const revealed = comp.revealed.get();
@@ -90,7 +81,7 @@ export const GAME_CONTEXT: IGameCTX = ultraCompState({
             !revealed.includes(a.position) && isMercifulMatch(text, a.text)
         );
 
-        if (comp.phase.get() === 'steal') {
+        if (phase === 'steal') {
             if (match) {
                 comp.revealed.set([...revealed, match.position]);
                 comp.pot.set(comp.pot.get() + match.points);
@@ -104,7 +95,7 @@ export const GAME_CONTEXT: IGameCTX = ultraCompState({
             return;
         }
 
-        if (comp.isFirstGuessPhase.get()) {
+        if (phase === 'first-guess-1' || phase === 'first-guess-2') {
             const guessingTeam = comp.activeTeam.get();
             let pointsEarned = 0;
 
@@ -123,10 +114,8 @@ export const GAME_CONTEXT: IGameCTX = ultraCompState({
                 [guessingTeam]: pointsEarned
             });
 
-            const nextAttempts = comp.firstGuessAttempts.get() + 1;
-
-            if (nextAttempts < 2) { //other team still needs their guess
-                comp.firstGuessAttempts.set(nextAttempts);
+            if (phase === 'first-guess-1') { //other team still needs their guess
+                comp.phase.set('first-guess-2');
                 comp.activeTeam.set(guessingTeam === 0 ? 1 : 0);
             } else { //both teams have guessed, higher score keeps the round
                 const firstGuessPoints = comp.firstGuessPoints.get();
@@ -134,9 +123,7 @@ export const GAME_CONTEXT: IGameCTX = ultraCompState({
                 const winnerTeam: 0 | 1 = diff === 0
                     ? (Math.random() < 0.5 ? 0 : 1) //tie: coin flip
                     : (diff > 0 ? 0 : 1);
-                comp.isFirstGuessPhase.set(false);
-                comp.firstGuessAttempts.set(0);
-                comp.awaitingPlayOrPass.set(true);
+                comp.phase.set('play-or-pass');
                 if (playOrPassTimer) clearTimeout(playOrPassTimer);
                 playOrPassTimer = setTimeout(() => {
                     playOrPassTimer = null;
@@ -147,11 +134,11 @@ export const GAME_CONTEXT: IGameCTX = ultraCompState({
                         cancelText: 'Pass',
                         onConfirm: () => {
                             comp.activeTeam.set(winnerTeam);
-                            comp.awaitingPlayOrPass.set(false);
+                            comp.phase.set('guessing');
                         },
                         onCancel: () => {
                             comp.activeTeam.set(winnerTeam === 0 ? 1: 0);
-                            comp.awaitingPlayOrPass.set(false);
+                            comp.phase.set('guessing');
                         }
                     })
                 }, WRON_BUZZER_DURATION)
@@ -191,6 +178,7 @@ export const GAME_CONTEXT: IGameCTX = ultraCompState({
     },
 
     awardPot: (comp: IGameCTX, teamIndex: 0 | 1) => {
+        if (comp.phase.get() === 'round-over') return; //pot already awarded
         const teams = comp.teams.get();
         comp.teams.set(teams.map((t, i) =>
             i === teamIndex ? { ...t, score: t.score + comp.pot.get() } : t
@@ -205,12 +193,11 @@ export const GAME_CONTEXT: IGameCTX = ultraCompState({
             clearTimeout(playOrPassTimer);
             playOrPassTimer = null;
         }
-        comp.awaitingPlayOrPass.set(false);
 
         const isGameOver = PANEL_CONTEXT.next() === 0;
         if (isGameOver) {
-            const winnerTeam = comp.teams
-            .get()
+            comp.phase.set('game-over');
+            const winnerTeam = [...comp.teams.get()]
             .sort((a, b) => b.score - a.score)[0];
             confetti({
                 particleCount: 150,
@@ -228,10 +215,8 @@ export const GAME_CONTEXT: IGameCTX = ultraCompState({
         comp.strikes.set(0);
         comp.revealed.set([]);
         comp.roundWinner.set(null);
-        comp.isFirstGuessPhase.set(true);
-        comp.firstGuessAttempts.set(0);
         comp.firstGuessPoints.set({ 0: 0, 1: 0 });
-        comp.phase.set('guessing');
+        comp.phase.set('first-guess-1');
         const nextStarting: 0 | 1 = comp.startingTeam.get() === 0 ? 1 : 0;
         comp.startingTeam.set(nextStarting);
         comp.activeTeam.set(nextStarting);
@@ -321,9 +306,9 @@ export const GAME_CONTEXT: IGameCTX = ultraCompState({
         teamIndex: 0 | 1,
         newPoints: number
     ) => {
-        const teams = [...comp.teams.get()];
-        teams[teamIndex].score = newPoints;
-        comp.teams.set(teams);
+        comp.teams.set(comp.teams.get().map((t, i) =>
+            i === teamIndex ? { ...t, score: newPoints } : t
+        ));
     },
 
     setTeamIcon: (comp: IGameCTX, teamIndex: 0 | 1, icon: string) => {

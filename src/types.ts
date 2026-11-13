@@ -11,7 +11,14 @@ export interface ITeam {
     icon: string;
 }
 
-export type GamePhase = 'guessing' | 'steal' | 'round-over';
+export type GamePhase =
+    | 'first-guess-1'
+    | 'first-guess-2'
+    | 'play-or-pass'
+    | 'guessing'
+    | 'steal'
+    | 'round-over'
+    | 'game-over';
 
 export interface IPersistedSettings {
     musicVolume: number;
