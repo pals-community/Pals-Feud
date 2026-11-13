@@ -14,6 +14,7 @@ export interface IConfirmCTX {
 
 let pendingConfirm: (() => void) | null = null;
 let pendingCancel: (() => void) | null = null;
+const queue: IConfirmOptions[] = [];
 
 export const CONFIRM_CONTEXT: IConfirmCTX = ultraCompState({
 
@@ -24,6 +25,10 @@ export const CONFIRM_CONTEXT: IConfirmCTX = ultraCompState({
     cancelText: '',
 
     show: (comp: IConfirmCTX, options: IConfirmOptions) => {
+        if (comp.open.get()) { //never overwrite an open modal's pending callbacks
+            queue.push(options);
+            return;
+        }
         comp.title.set(options.title ?? '');
         comp.message.set(options.message);
         comp.confirmText.set(options.confirmText ?? 'OK');
@@ -39,6 +44,7 @@ export const CONFIRM_CONTEXT: IConfirmCTX = ultraCompState({
         pendingConfirm = null;
         pendingCancel = null;
         callback?.();
+        showNext(comp);
     },
 
     cancel: (comp: IConfirmCTX) => {
@@ -47,9 +53,16 @@ export const CONFIRM_CONTEXT: IConfirmCTX = ultraCompState({
         pendingConfirm = null;
         pendingCancel = null;
         callback?.();
+        showNext(comp);
     }
 
 });
+
+function showNext(comp: IConfirmCTX): void {
+    if (comp.open.get()) return;
+    const next = queue.shift();
+    if (next) comp.show(next);
+}
 
 export function showFirstGuessPrompt(): void {
     CONFIRM_CONTEXT.show({
