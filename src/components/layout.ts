@@ -12,6 +12,7 @@ import { TeamEditor } from "./team-editor/team-editor";
 import { DevBy } from "./dev-by/dev-by";
 import { AdModal } from "./ad-modal/ad-modal";
 import { EmojiModal } from "./emoji-modal/emoji-modal";
+import { PaywallModal } from "./paywall-modal/paywall-modal";
 
 export function Layout(
     ...children: UltraLightElement[]
@@ -47,6 +48,7 @@ export function Layout(
         ConfirmModal(),
 
         AdModal(),
+        PaywallModal(),
 
         EmojiModal(),
 

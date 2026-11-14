@@ -7,6 +7,7 @@ import { PreGameScreenAvatar } from "@/components/pre-game-screen/avatar";
 import { PreGameScreenTitle } from "@/components/pre-game-screen/title";
 import { ButtonGen } from "@/components/button-gen/button-gen";
 import { CsvUpload } from "@/components/csv-upload/csv-upload";
+import { PAYWALL_CTX } from "@/context/paywall.context";
 import { PANEL_CONTEXT } from "@/context/panel.context";
 import { DISCORD_ICON } from "@/data";
 import { VideoUpload } from "@/components/video-upload/video-upload";
@@ -36,7 +37,7 @@ export function PreGameScreen() {
                     const teams = GAME_CONTEXT.teams.get().map(t => t.name);
                     const onClick = (teamIndex: 0|1) => {
                         GAME_CONTEXT.activeTeam.set(teamIndex);
-                        ultraNavigate({ href: '/game' })
+                        PAYWALL_CTX.show(() => ultraNavigate({ href: '/game' }))
                     }
                     CONFIRM_CONTEXT.show({
                         title: 'Who should start?',
